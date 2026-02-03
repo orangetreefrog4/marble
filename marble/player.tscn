@@ -1,0 +1,84 @@
+[gd_scene format=3 uid="uid://da3guva4pykjl"]
+
+[sub_resource type="GDScript" id="GDScript_sh265"]
+resource_name = "Player"
+script/source = "extends Node3D
+
+var speed = 25
+
+func _ready() -> void:
+	get_node(\"Marble/Camera/Camera\").set(\"Current\", true)
+
+func _physics_process(delta: float) -> void:
+	# Marble/Player
+	if Input.is_key_pressed(KEY_W):
+		get_node(\"Marble\").apply_central_force(Vector3(speed,0,0))
+	if Input.is_key_pressed(KEY_S):
+		get_node(\"Marble\").apply_central_force(Vector3(-speed,0,0))
+	if Input.is_key_pressed(KEY_A):
+		get_node(\"Marble\").apply_central_force(Vector3(0,0,speed))
+	if Input.is_key_pressed(KEY_D):
+		get_node(\"Marble\").apply_central_force(Vector3(0,0,-speed))
+	# Camera
+	get_node(\"Marble/Camera/Camera\").position = get_node(\"Marble\").position - Vector3(+4,-2,0)
+"
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_4flbx"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_onrkg"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_onrkg"]
+render_priority = 1
+transparency = 1
+shading_mode = 0
+albedo_color = Color(0, 0, 0, 1)
+grow = true
+grow_amount = 0.05
+stencil_mode = 3
+stencil_flags = 1
+stencil_compare = 5
+metadata/_stencil_owned = true
+
+[sub_resource type="Gradient" id="Gradient_i3pqv"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_hqtel"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_sweqy"]
+width = 2048
+height = 2048
+noise = SubResource("FastNoiseLite_hqtel")
+color_ramp = SubResource("Gradient_i3pqv")
+seamless = true
+in_3d_space = true
+normalize = false
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2hs0m"]
+next_pass = SubResource("StandardMaterial3D_onrkg")
+albedo_color = Color(0, 0, 1, 1)
+metallic = 0.5
+roughness_texture = SubResource("NoiseTexture2D_sweqy")
+stencil_mode = 1
+stencil_flags = 2
+stencil_outline_thickness = 0.05
+
+[node name="Player" type="Node3D" unique_id=46808221]
+script = SubResource("GDScript_sh265")
+
+[node name="Marble" type="RigidBody3D" parent="." unique_id=1249214826]
+axis_lock_angular_y = true
+center_of_mass_mode = 1
+can_sleep = false
+
+[node name="Collider" type="CollisionShape3D" parent="Marble" unique_id=1238718793]
+shape = SubResource("SphereShape3D_4flbx")
+
+[node name="Mesh" type="MeshInstance3D" parent="Marble" unique_id=1873556017]
+mesh = SubResource("SphereMesh_onrkg")
+surface_material_override/0 = SubResource("StandardMaterial3D_2hs0m")
+
+[node name="Camera" type="Node3D" parent="Marble" unique_id=1898917247]
+
+[node name="Camera" type="Camera3D" parent="Marble/Camera" unique_id=591995065]
+transform = Transform3D(-4.371139e-08, 0.5, -0.8660254, 0, 0.8660254, 0.5, 1, 2.1855694e-08, -3.7855173e-08, 4, 2, 0)
+top_level = true
+current = true

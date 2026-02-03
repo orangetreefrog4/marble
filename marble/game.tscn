@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://dgooax8popb3x"]
+
+[ext_resource type="PackedScene" uid="uid://da3guva4pykjl" path="res://player.tscn" id="1_80nbo"]
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_mwb40"]
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_80nbo"]
+
+[node name="Node3D" type="Node3D" unique_id=1407078156]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1407948639]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" unique_id=874724034]
+shape = SubResource("WorldBoundaryShape3D_mwb40")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=1965540931]
+transform = Transform3D(10, 0, 0, 0, 1, 4.5767643e-14, 0, -4.5767642e-15, 10, 0, 0, 0)
+mesh = SubResource("PlaneMesh_80nbo")
+
+[node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=176782298]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 10, 0)
+light_energy = 20.0
+shadow_enabled = true
+distance_fade_enabled = true
+spot_range = 20.0
+
+[node name="Player" parent="." unique_id=46808221 instance=ExtResource("1_80nbo")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
